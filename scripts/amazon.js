@@ -1,13 +1,11 @@
 import { cart } from "../data/cart-class.js";
-import { products, loadProducts } from "../data/products.js";
-import { formatMoney } from "./utils/money.js";
+import { products, loadProductsAsync } from "../data/products.js";
 
-loadProducts(renderProductsGrid);
+await loadProductsAsync("https://supersimplebackend.dev/products");
 
-function renderProductsGrid() {
-  let productHtml = ``;
-  products.forEach((product) => {
-    productHtml += `
+let productHtml = ``;
+products.forEach((product) => {
+  productHtml += `
   <div class="product-container">
           <div class="product-image-container">
             <img
@@ -61,28 +59,27 @@ function renderProductsGrid() {
           }">Add to Cart</button>
         </div>
   `;
-  });
+});
 
-  document.querySelector(".products-grid").innerHTML = productHtml;
+document.querySelector(".products-grid").innerHTML = productHtml;
 
-  function updateCartQuantity() {
-    document.querySelector(".cart-quantity").innerHTML =
-      cart.calculateCartQuantity();
-  }
-
-  updateCartQuantity();
-
-  document.querySelectorAll(".add-to-cart-button").forEach((product) => {
-    product.addEventListener("click", () => {
-      let { productId } = product.dataset;
-      cart.addToCart(productId);
-      updateCartQuantity();
-
-      document.querySelector(`.product-${productId}`).style.opacity = 1;
-
-      setTimeout(() => {
-        document.querySelector(`.product-${productId}`).style.opacity = 0;
-      }, 2000);
-    });
-  });
+function updateCartQuantity() {
+  document.querySelector(".cart-quantity").innerHTML =
+    cart.calculateCartQuantity();
 }
+
+updateCartQuantity();
+
+document.querySelectorAll(".add-to-cart-button").forEach((product) => {
+  product.addEventListener("click", () => {
+    let { productId } = product.dataset;
+    cart.addToCart(productId);
+    updateCartQuantity();
+
+    document.querySelector(`.product-${productId}`).style.opacity = 1;
+
+    setTimeout(() => {
+      document.querySelector(`.product-${productId}`).style.opacity = 0;
+    }, 2000);
+  });
+});
