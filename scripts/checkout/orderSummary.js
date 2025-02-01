@@ -1,10 +1,4 @@
-import {
-  cart,
-  removeFromCart,
-  calculateCartQuantity,
-  updateQuantity,
-  updateDeliveryOption,
-} from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { products, getProduct } from "../../data/products.js";
 import {
   deliveryOptions,
@@ -20,7 +14,7 @@ import { renderCheckoutHeader } from "./checkoutHeader.js";
 export function renderOrderSummary() {
   let cartHtml = "";
 
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     let productId = cartItem.productId;
 
     let matchingProduct = getProduct(productId);
@@ -119,7 +113,7 @@ export function renderOrderSummary() {
   document.querySelectorAll(".delete-quantity-link").forEach((link) => {
     link.addEventListener("click", () => {
       let productId = link.dataset.productId;
-      removeFromCart(productId);
+      cart.removeFromCart(productId);
       renderOrderSummary();
       updateCartQuantity();
       renderPaymentSummary();
@@ -127,7 +121,7 @@ export function renderOrderSummary() {
   });
 
   function updateCartQuantity() {
-    renderCheckoutHeader(calculateCartQuantity());
+    renderCheckoutHeader(cart.calculateCartQuantity());
   }
 
   updateCartQuantity();
@@ -151,8 +145,8 @@ export function renderOrderSummary() {
       let value = Number(
         document.querySelector(`.js-input-${productId}`).value
       );
-      updateQuantity(productId, value);
-      renderCheckoutHeader(calculateCartQuantity());
+      cart.updateQuantity(productId, value);
+      renderCheckoutHeader(cart.calculateCartQuantity());
       renderPaymentSummary();
       renderOrderSummary();
     });
@@ -163,7 +157,7 @@ export function renderOrderSummary() {
   document.querySelectorAll(".js-delivery-option").forEach((link) => {
     link.addEventListener("click", (e) => {
       const { productId, deliveryOptionId } = link.dataset;
-      updateDeliveryOption(productId, deliveryOptionId);
+      cart.updateDeliveryOption(productId, deliveryOptionId);
       renderOrderSummary();
       renderPaymentSummary();
     });

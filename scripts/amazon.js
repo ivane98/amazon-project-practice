@@ -1,10 +1,13 @@
-import { cart, addToCart, calculateCartQuantity } from "../data/cart.js";
-import { products } from "../data/products.js";
+import { cart } from "../data/cart-class.js";
+import { products, loadProducts } from "../data/products.js";
 import { formatMoney } from "./utils/money.js";
 
-let productHtml = ``;
-products.forEach((product) => {
-  productHtml += `
+loadProducts(renderProductsGrid);
+
+function renderProductsGrid() {
+  let productHtml = ``;
+  products.forEach((product) => {
+    productHtml += `
   <div class="product-container">
           <div class="product-image-container">
             <img
@@ -58,26 +61,28 @@ products.forEach((product) => {
           }">Add to Cart</button>
         </div>
   `;
-});
-
-document.querySelector(".products-grid").innerHTML = productHtml;
-
-function updateCartQuantity() {
-  document.querySelector(".cart-quantity").innerHTML = calculateCartQuantity();
-}
-
-updateCartQuantity();
-
-document.querySelectorAll(".add-to-cart-button").forEach((product) => {
-  product.addEventListener("click", () => {
-    let { productId } = product.dataset;
-    addToCart(productId);
-    updateCartQuantity();
-
-    document.querySelector(`.product-${productId}`).style.opacity = 1;
-
-    setTimeout(() => {
-      document.querySelector(`.product-${productId}`).style.opacity = 0;
-    }, 2000);
   });
-});
+
+  document.querySelector(".products-grid").innerHTML = productHtml;
+
+  function updateCartQuantity() {
+    document.querySelector(".cart-quantity").innerHTML =
+      cart.calculateCartQuantity();
+  }
+
+  updateCartQuantity();
+
+  document.querySelectorAll(".add-to-cart-button").forEach((product) => {
+    product.addEventListener("click", () => {
+      let { productId } = product.dataset;
+      cart.addToCart(productId);
+      updateCartQuantity();
+
+      document.querySelector(`.product-${productId}`).style.opacity = 1;
+
+      setTimeout(() => {
+        document.querySelector(`.product-${productId}`).style.opacity = 0;
+      }, 2000);
+    });
+  });
+}
