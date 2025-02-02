@@ -1,8 +1,6 @@
 import { renderOrderSummary } from "./checkout/orderSummary.js";
-
 import { renderPaymentSummary } from "./checkout/paymentSummary.js";
-
-import "../data/cart-class.js";
+import { cart } from "../data/cart-class.js";
 import { loadProductsAsync } from "../data/products.js";
 
 async function loadPage() {
@@ -11,7 +9,7 @@ async function loadPage() {
   } catch (error) {
     console.log("please try again");
   }
-
+  cart.loadCartFetch();
   renderOrderSummary();
   renderPaymentSummary();
 }

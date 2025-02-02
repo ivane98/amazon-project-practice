@@ -63,7 +63,7 @@ products.forEach((product) => {
 
 document.querySelector(".products-grid").innerHTML = productHtml;
 
-function updateCartQuantity() {
+export function updateCartQuantity() {
   document.querySelector(".cart-quantity").innerHTML =
     cart.calculateCartQuantity();
 }

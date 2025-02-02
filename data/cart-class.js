@@ -106,6 +106,13 @@ class Cart {
 
     this.saveToStorage();
   }
+
+  async loadCartFetch() {
+    const res = await fetch("https://supersimplebackend.dev/cart");
+    const data = await res.text();
+    console.log(data);
+    return data;
+  }
 }
 
 export const cart = new Cart("cart-oop");
