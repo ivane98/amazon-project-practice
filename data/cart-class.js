@@ -113,6 +113,11 @@ class Cart {
     console.log(data);
     return data;
   }
+
+  updateCartQuantity() {
+    document.querySelector(".cart-quantity").innerHTML =
+      this.calculateCartQuantity();
+  }
 }
 
 export const cart = new Cart("cart-oop");
